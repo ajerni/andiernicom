@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Logo } from "@/components/logo";
 import { Separator } from "@/components/ui/separator";
 import { projects } from "@/lib/projects";
 
@@ -21,13 +22,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6">
-          <Link href="/" className="flex items-center">
-            <img
-              src="/logobw.png"
-              alt="Andierni Logo"
-              className="h-8 w-auto scale-125"
-            />
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5">
+          <Link href="/" aria-label="andierni.com home" className="flex items-center">
+            <Logo className="text-[30px] sm:text-[38px]" />
           </Link>
           <nav className="flex items-center gap-1">
             {navigation.map((item) => (
@@ -52,15 +49,15 @@ export default function Home() {
       <main className="mx-auto max-w-7xl px-6">
         <section className="py-16 sm:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            Andreas Erni
+            Andi Erni
           </p>
           <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-            I build web apps, AI agents and the odd game.
+            I build web apps, AI agents and tinker with all sorts of things.
           </h1>
           <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
             A collection of things I made over the years — full web apps, AI
-            experiments, Rust services and mini games. Everything below is live
-            and most of it is open source.
+            experiments, Rust services and mini games (most of the game ideas from the kids, programmed by me). Everything below is live
+            and ready to be used including the source code.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild>
@@ -84,7 +81,7 @@ export default function Home() {
 
         <Separator />
 
-        <section id="projects" className="scroll-mt-16 py-16">
+        <section id="projects" className="scroll-mt-36 py-16">
           <div className="flex items-end justify-between gap-4">
             <h2 className="text-2xl font-bold">Projects</h2>
             <span className="text-sm text-muted-foreground">
