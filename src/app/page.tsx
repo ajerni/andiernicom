@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Logo } from "@/components/logo";
+import { MobileNav } from "@/components/mobile-nav";
 import { Separator } from "@/components/ui/separator";
 import { projects } from "@/lib/projects";
 
@@ -22,11 +23,14 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-5">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
           <Link href="/" aria-label="andierni.com home" className="flex items-center">
-            <Logo className="text-[30px] sm:text-[38px]" />
+            <Logo className="text-[26px] sm:text-[38px]" />
           </Link>
-          <nav className="flex items-center gap-1">
+          <div className="md:hidden">
+            <MobileNav items={navigation} />
+          </div>
+          <nav className="hidden items-center gap-1 md:flex">
             {navigation.map((item) => (
               <Button key={item.href} variant="ghost" size="sm" asChild>
                 <Link href={item.href}>{item.label}</Link>
@@ -46,7 +50,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-7xl px-6">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6">
         <section className="py-16 sm:py-24">
           <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
             Andi Erni
