@@ -1,7 +1,5 @@
-"use client";
-
-import * as React from "react";
-import { ExternalLink, Github, Menu } from "lucide-react";
+import { ExternalLink, Github } from "lucide-react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,273 +8,156 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarProvider,
-  SidebarInset,
-} from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { projects } from "@/lib/projects";
 
-// Add new projects here
-const projects = [
-  {
-    id: 1,
-    name: "Personal Website",
-    description:
-      "My personal website built with Django. Shows some personal photos, games and stuff I did in the past.",
-    preview: "/screenshots/personal-website.png",
-    link: "https://www.andierni.ch",
-    github: "https://github.com/ajerni/andierni",
-  },
-  {
-    id: 2,
-    name: "Personal Blog",
-    description:
-      "My blog. Basically used for testing and playing around with new technologies.",
-    preview: "/screenshots/personal-blog.png",
-    link: "https://blog.andierni.ch",
-    github: "https://github.com/ajerni/andiblog",
-  },
-  {
-    id: 3,
-    name: "Personal Bot",
-    description:
-      "My personal bot. Able to manage my tasks and calendar, sending e-mails and more. Connected to n8n to run agents",
-    preview: "/screenshots/bot.png",
-    link: "https://bot.andierni.ch",
-    github: "https://github.com/ajerni/bot",
-  },
-  {
-    id: 4,
-    name: "Wine Cellar - www.mywine.info",
-    description:
-      "My wine cellar management system. Fully fledged web app using Next.js, Tailwind CSS, PostgreSQL, FastAPI and Langchain for AI features.",
-    preview: "/screenshots/wine-cellar.png",
-    link: "https://mywine.info",
-    github: "https://github.com/ajerni/mywine",
-  },
-  {
-    id: 5,
-    name: "www.ernilabs.com",
-    description: "The ultimate docker host for IoT and AI projects",
-    preview: "/screenshots/ernilabs.png",
-    link: "https://www.ernilabs.com",
-    github: "https://github.com/ajerni",
-  },
-  {
-    id: 6,
-    name: "LLM's & AI Playground",
-    description:
-      "Langchain (Python) and LLMs (Large Language Models) AI playground. Ask Andi for password :-).",
-    preview: "/screenshots/langchain-streamlit.png",
-    link: "https://erni-langchain.streamlit.app/",
-    github: "https://github.com/ajerni/erni-langchain",
-  },
-  {
-    id: 7,
-    name: "Rust and PostgreSQL",
-    description:
-      "PostgreSQL database 💾 application written in Rust 🦀 using the SQLX library and serving it with Actix webserver. Also includes a Bevy Engine 🎮 game.",
-    preview: "/screenshots/rust-sqlx.png",
-    link: "https://rust-sqlx.onrender.com/htmx",
-    github: "https://github.com/ajerni/rust-sqlx",
-  },
-  {
-    id: 8,
-    name: "Mini-sites and tests",
-    description: "A sample of minisites and tests I did over the years.",
-    preview: "/screenshots/minisites-preview.png",
-    link: "/minisites",
-    github: "https://github.com/ajerni/",
-  },
-  {
-    id: 9,
-    name: "Games",
-    description: "Some funny mini games. Most game ideas came from my kids :-)",
-    preview: "/screenshots/games-preview.png",
-    link: "/games",
-    github: "https://github.com/ajerni/",
-  },
-  {
-    id: 10,
-    name: "Synth Patch Library",
-    description: "A full web app for managing and sharing synth patches.",
-    preview: "/screenshots/patches.png",
-    link: "https://synth-patch-library.com",
-    github: "https://github.com/ajerni/patches/",
-  },
-  {
-    id: 11,
-    name: "andreaserni.com - Digital Twin",
-    description: "An AI powered digital twin of myself",
-    preview: "/screenshots/andreasernicom.png",
-    link: "https://andreaserni.com",
-    github: "https://github.com/ajerni/digital-twin/",
-  },
-  {
-    id: 12,
-    name: "Status Tracker and Scoreboard",
-    description: "Actix Web and PostgreSQL",
-    preview: "/screenshots/actixsc.jpg",
-    link: "https://statustracker.ernilabs.com",
-    github: "https://github.com/ajerni/actix-psql-template",
-  },
-  {
-    id: 13,
-    name: "Chat Room App",
-    description: "Chatroom using Socket.io",
-    preview: "/screenshots/chatpic.jpg",
-    link: "https://chat.andierni.ch",
-    github: "https://github.com/ajerni/chat",
-  },
-  {
-    id: 14,
-    name: "Learn A2A",
-    description: "Agent to Agent protocol learning",
-    preview: "/screenshots/a2a.jpg",
-    link: "https://learn-a2a.com",
-    github: "https://github.com/ajerni/a2a",
-  },
+const navigation = [
+  { label: "Projects", href: "#projects" },
+  { label: "Minisites", href: "/minisites" },
+  { label: "Games", href: "/games" },
 ];
 
-export default function Dashboard() {
-  const [selectedProject, setSelectedProject] = React.useState(projects[0]);
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  const isMobile = useIsMobile();
-
-  // useEffect to preload images
-  React.useEffect(() => {
-    projects.forEach((project) => {
-      const img = new Image();
-      img.src = project.preview;
-    });
-  }, []);
-
-  const ProjectsList = () => (
-    <SidebarContent>
-      <SidebarGroup>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            {projects.map((project) => (
-              <SidebarMenuItem key={project.id}>
-                <SidebarMenuButton
-                  onClick={() => {
-                    setSelectedProject(project);
-                    if (isMobile) setMobileMenuOpen(false);
-                  }}
-                  isActive={selectedProject.id === project.id}
-                >
-                  {project.name}
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </SidebarContent>
-  );
-
+export default function Home() {
   return (
-    <SidebarProvider>
-      {isMobile ? (
-        <>
-          <div className="fixed top-0 left-0 right-0 z-[200] flex items-center gap-3 bg-background p-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setMobileMenuOpen(true)}
-              className="bg-background"
-            >
-              <Menu className="h-4 w-4" />
-            </Button>
+    <div className="min-h-screen bg-background">
+      <header className="sticky top-0 z-50 border-b bg-background/80 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-6">
+          <Link href="/" className="flex items-center">
             <img
               src="/logobw.png"
-              alt="Andierni Tech Logo"
+              alt="Andierni Logo"
               className="h-8 w-auto scale-125"
             />
+          </Link>
+          <nav className="flex items-center gap-1">
+            {navigation.map((item) => (
+              <Button key={item.href} variant="ghost" size="sm" asChild>
+                <Link href={item.href}>{item.label}</Link>
+              </Button>
+            ))}
+            <Button variant="outline" size="icon" asChild className="ml-2">
+              <a
+                href="https://github.com/ajerni"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub profile"
+              >
+                <Github className="h-4 w-4" />
+              </a>
+            </Button>
+          </nav>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-7xl px-6">
+        <section className="py-16 sm:py-24">
+          <p className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
+            Andreas Erni
+          </p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+            I build web apps, AI agents and the odd game.
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+            A collection of things I made over the years — full web apps, AI
+            experiments, Rust services and mini games. Everything below is live
+            and most of it is open source.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button asChild>
+              <Link href="#projects">
+                Browse projects
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <a
+                href="https://github.com/ajerni"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="mr-2 h-4 w-4" />
+                GitHub
+              </a>
+            </Button>
+          </div>
+        </section>
+
+        <Separator />
+
+        <section id="projects" className="scroll-mt-16 py-16">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-2xl font-bold">Projects</h2>
+            <span className="text-sm text-muted-foreground">
+              {projects.length} projects
+            </span>
           </div>
 
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetContent side="left" className="w-[240px] p-0">
-              <SidebarHeader className="border-b px-4 py-2">
-                <img
-                  src="/logobw.png"
-                  alt="Andierni Tech Logo"
-                  className="h-12 w-auto mb-2 scale-125"
-                />
-                <h2 className="text-lg font-semibold">Projects</h2>
-              </SidebarHeader>
-              <ProjectsList />
-            </SheetContent>
-          </Sheet>
-        </>
-      ) : (
-        <Sidebar className="border-r bg-background">
-          <SidebarHeader className="border-b px-4 py-2">
-            <img
-              src="/logobw.png"
-              alt="Andierni Tech Logo"
-              className="h-12 w-auto mb-2 scale-125"
-            />
-            <h2 className="text-lg font-semibold">Projects</h2>
-          </SidebarHeader>
-          <ProjectsList />
-        </Sidebar>
-      )}
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <Card
+                key={project.id}
+                className="group flex flex-col overflow-hidden transition-all hover:ring-2 hover:ring-primary"
+              >
+                <div className="overflow-hidden border-b bg-muted">
+                  <img
+                    src={project.preview}
+                    alt={`Preview of ${project.name}`}
+                    loading="lazy"
+                    className="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-lg">{project.name}</CardTitle>
+                  <CardDescription>{project.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="mt-auto flex flex-wrap gap-3">
+                  <Button asChild size="sm" className="flex-1 min-w-[110px]">
+                    <a
+                      href={project.link}
+                      target={
+                        project.link.startsWith("/") ? undefined : "_blank"
+                      }
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="mr-2 h-4 w-4" />
+                      Visit
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="outline"
+                    className="flex-1 min-w-[110px]"
+                  >
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Github className="mr-2 h-4 w-4" />
+                      Source
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      </main>
 
-      <SidebarInset className={`min-h-screen ${isMobile ? "w-full" : ""}`}>
-        <main className={`flex-1 p-6 ${isMobile ? "pt-20" : ""} relative z-0`}>
-          <Card className="relative overflow-hidden">
-            <CardHeader>
-              <CardTitle>{selectedProject.name}</CardTitle>
-              <CardDescription>{selectedProject.description}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="overflow-hidden rounded-lg border">
-                <img
-                  src={selectedProject.preview}
-                  alt={`Preview of ${selectedProject.name}`}
-                  className="aspect-video w-full object-cover"
-                />
-              </div>
-              <div className="flex gap-4 flex-wrap">
-                <Button asChild className="flex-1 sm:flex-none min-w-[120px]">
-                  <a
-                    href={selectedProject.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    Visit Project
-                  </a>
-                </Button>
-                <Button
-                  variant="outline"
-                  asChild
-                  className="flex-1 sm:flex-none min-w-[120px]"
-                >
-                  <a
-                    href={selectedProject.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Github className="mr-2 h-4 w-4" />
-                    View Source
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
+      <footer className="border-t">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-8 text-sm text-muted-foreground sm:flex-row">
+          <span>© {new Date().getFullYear()} Andreas Erni</span>
+          <a
+            href="https://github.com/ajerni"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground"
+          >
+            github.com/ajerni
+          </a>
+        </div>
+      </footer>
+    </div>
   );
 }

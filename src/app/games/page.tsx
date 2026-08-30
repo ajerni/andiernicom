@@ -90,7 +90,7 @@ const minisites = [
     title: "Penalty", 
     description: "Random penalty shooter game. Programmed wit Claude 3.5 Sonnet in 5 minutes :-) Amazing times!",
     image: "/minisites/penalty.png",
-    link: "https://penalty.andierni.tech"
+    link: "https://penalty.andierni.com"
   },
   
  

@@ -14,8 +14,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "andierni.tech",
-  description: "Andi's portfolio",
+  title: "andierni.com",
+  description:
+    "Andreas Erni's portfolio — web apps, AI agents, Rust services and mini games.",
 };
 
 export default function RootLayout({
