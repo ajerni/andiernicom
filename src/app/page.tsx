@@ -137,6 +137,14 @@ const projects = [
     link: "https://chat.andierni.ch",
     github: "https://github.com/ajerni/chat",
   },
+  {
+    id: 14,
+    name: "Learn A2A",
+    description: "Agent to Agent protocol learning",
+    preview: "/screenshots/a2a.jpg",
+    link: "https://learn-a2a.com",
+    github: "https://github.com/ajerni/a2a",
+  },
 ];
 
 export default function Dashboard() {
